@@ -56,10 +56,9 @@ Projeto acadêmico desenvolvido para a disciplina de **Desenvolvimento de Sistem
 
 ```bash
 📦 src
- ┣ 📂 model          # Representação das tarefas
- ┣ 📂 service        # Exportadores PDF/Excel
- ┣ 📂 ui             # Interface com usuário
- ┗ 📜 Main.java      # Ponto de entrada
+ ┣ 📂 controllers       # Controladores
+ ┣ 📂 services          # Exportadores PDF/Excel
+ ┣ 📂 views             # Interface com usuário
 ```
 
 ## 📑 Créditos
