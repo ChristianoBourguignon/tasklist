@@ -4,4 +4,13 @@
 
 <web-app>
   <display-name>TaskList Manager</display-name>
+  <servlet>
+    <servlet-name>Main</servlet-name>
+    <servlet-class>br.com.tasklist.Main</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>Main</servlet-name>
+    <url-pattern>/tarefas</url-pattern>
+  </servlet-mapping>
 </web-app>
