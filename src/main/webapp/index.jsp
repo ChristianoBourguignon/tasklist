@@ -3,14 +3,17 @@
 <html>
 <head>
     <title>Gerenciador de Tarefas</title>
+
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body class="bg-light">
-<%
-    String contextPath = request.getContextPath();
-%>
-
 <div class="container mt-5">
     <script>
         const usuario = localStorage.getItem("usuario");
@@ -44,115 +47,40 @@
         </div>
     </div>
 
+    <div class="d-flex flex-wrap justify-content-center gap-2 mb-3">
+        <button id="exportEXCEL" class="btn btn-success">
+            Exportar para Excel
+        </button>
+        <button id="exportPDF" class="btn btn-danger">
+            Exportar para PDF
+        </button>
+    </div>
+
     <!-- Lista de Tarefas -->
     <div id="listaTarefas" class="row row-cols-1 gy-3">
         <!-- Tarefas inseridas dinamicamente aqui -->
     </div>
 </div>
 
-<script>
-    const form = document.getElementById("tarefaForm");
-    const listaTarefas = document.getElementById("listaTarefas");
-    const statusOpcoes = ["Pendente", "Em andamento", "Concluído"];
-
-    form.addEventListener("submit", function (e) {
-        e.preventDefault();
-        const nome = document.getElementById("nome").value;
-        const descricao = document.getElementById("descricao").value;
-        const dataCriacao = new Date().toLocaleString("pt-BR");
-        criarTarefaFront(nome, descricao, dataCriacao);
-        form.reset();
-    });
-
-    function criarTarefaFront(nome, descricao, dataCriacao) {
-        criarTarefaBack(nome,descricao,dataCriacao);
-        $.ajax({
-            url:"/tarefas",
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            data: JSON.stringify({
-                operacao: "list"
-            }),
-            sucess: data => {
-                console.log("Tarefa recebidas:", data);
-                <%--const card = document.createElement("div");--%>
-                <%--card.className = "col";--%>
-                <%--card.innerHTML = `--%>
-                <%--    <div class="card shadow-sm">--%>
-                <%--        <div class="card-body">--%>
-                <%--            <div class="d-flex align-items-center mb-2">--%>
-                <%--                <input type="checkbox" class="form-check-input me-2 tarefa-check">--%>
-                <%--                <small class="text-muted ms-auto">Criada em: ${dataCriacao}</small>--%>
-                <%--            </div>--%>
-                <%--            <input type="text" class="form-control mb-2 tarefa-nome" value="${nome}">--%>
-                <%--            <textarea class="form-control mb-2 tarefa-desc">${descricao}</textarea>--%>
-                <%--            <div class="d-flex align-items-center">--%>
-                <%--                <select class="form-select tarefa-status me-2">--%>
-                <%--                    ${statusOpcoes.map(s => `<option value="${s}">${s}</option>`).join("")}--%>
-                <%--                </select>--%>
-                <%--                <button class="btn btn-danger btn-sm me-2 remover-btn">Remover</button>--%>
-                <%--            </div>--%>
-                <%--        </div>--%>
-                <%--    </div>--%>
-                <%--`;--%>
-            },
-            error: (xhr,status,error) => {
-                console.error("Erro ao criar as tarefas: " + error + "/" + status + "/" + xhr);
-                alert(`Ocorreu um erro ao inserir a tarefa`);
-            }
-        });
+<!-- Modal -->
+<div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body bg-white" id="modalBody">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
-        const check = card.querySelector(".tarefa-check");
-        const nomeInput = card.querySelector(".tarefa-nome");
-        const descInput = card.querySelector(".tarefa-desc");
-        const statusSelect = card.querySelector(".tarefa-status");
 
-        // Evento de checkbox
-        check.addEventListener("change", () => {
-            const checked = check.checked;
-            nomeInput.readOnly = checked;
-            descInput.readOnly = checked;
-            statusSelect.disabled = checked;
-
-            if (checked) {
-                statusSelect.value = "Concluído";
-            } else {
-                statusSelect.value = "Pendente";
-            }
-        });
-
-        // Evento de remover
-        card.querySelector(".remover-btn").addEventListener("click", () => {
-            card.remove();
-        });
-
-        listaTarefas.appendChild(card);
-    }
-    function criarTarefaBack(nome,descricao,dataCriacao){
-        $.ajax({
-            url:"/tarefas",
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            data: JSON.stringify({
-                nome: nome,
-                descricao: descricao,
-                dtCriacao: dataCriacao,
-                operacao: "add"
-            }),
-            sucess: data => {
-                console.log("Tarefa recebidas:", data);
-            },
-            error: (xhr,status,error) => {
-                console.error("Erro ao criar as tarefas: " + error + "/" + status + "/" + xhr);
-                alert(`Ocorreu um erro ao inserir a tarefa`);
-            }
-            });
-    }
-</script>
+<script src="script.js"></script>
 </body>
 </html>
