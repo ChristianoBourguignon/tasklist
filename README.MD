@@ -8,13 +8,16 @@ Projeto acadêmico desenvolvido para a disciplina de **Desenvolvimento de Sistem
 - 👥 Compartilhamento de listas entre usuários
 - 📤 Exportação da lista de tarefas para:
   - PDF (utilizando biblioteca **iText**)
-  - Excel (utilizando biblioteca **Apache POI**) ( Podendo ser alterado)
+  - Excel (utilizando biblioteca **Apache POI**)
   
 ## 🔧 Tecnologias Utilizadas
 
-- Java 11+
+- Java 14
+- Maven
+- Jetty (servidor web)
 - Biblioteca [iText PDF](https://kb.itextpdf.com/home/it7kb/examples/itext-7-jump-start-tutorial-for-java)
 - Biblioteca [Apache POI](https://poi.apache.org/) (para geração de arquivos `.xlsx`)
+- Gson (para manipulação de JSON)
 - IDE: IntelliJ IDEA / Eclipse / VS Code
 
 ## 📦 Como Executar o Projeto
@@ -26,39 +29,29 @@ Projeto acadêmico desenvolvido para a disciplina de **Desenvolvimento de Sistem
    cd tasklist
    ```
 
-2. Importe o projeto em sua IDE preferida como um projeto Maven ou adicione manualmente os JARs necessários.
+2. Certifique-se de ter o Java 14 e Maven instalados
 
-3. Adicione as bibliotecas:
-
-   ### Dependências Maven (Exemplo):
-   ```xml
-   <dependencies>
-     <!-- iText PDF -->
-     <dependency>
-       <groupId>com.itextpdf</groupId>
-       <artifactId>itext7-core</artifactId>
-       <version>8.0.0</version>
-       <type>pom</type>
-     </dependency>
-
-     <!-- Apache POI para Excel -->
-     <dependency>
-       <groupId>org.apache.poi</groupId>
-       <artifactId>poi-ooxml</artifactId>
-       <version>5.2.3</version>
-     </dependency>
-   </dependencies>
+3. Execute os seguintes comandos:
+   ```bash
+   mvn clean install
+   mvn jetty:run
    ```
-4. Rode o `MVN INSTALL` e `MVN JETTY:RUN`
-5. Acesse `localhost:8080`.
+
+4. Acesse `http://localhost:8080` no seu navegador
 
 ## 📄 Estrutura do Projeto
 
-```bash
+```
 📦 src
- ┣ 📂 controllers       # Controladores
- ┣ 📂 services          # Exportadores PDF/Excel
- ┣ 📂 views             # Interface com usuário
+ ┣ 📂 main
+ ┃ ┣ 📂 java
+ ┃ ┃ ┗ 📂 br.com.tasklist
+ ┃ ┃   ┣ 📂 services
+ ┃ ┃   ┣ 📜 Main.java
+ ┃ ┃   ┣ 📜 Tarefa.java
+ ┃ ┃   ┗ 📜 TarefasController.java
+ ┃ ┣ 📂 resources
+ ┃ ┗ 📂 webapp
 ```
 
 ## 📑 Créditos
